@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+
+{% block title %}Contatos - Agenda Eletrônica{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+    <!-- Header com Estatísticas -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">
+            <i class="fas fa-users text-blue-600"></i> Meus Contatos
+        </h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium">Total de Contatos</p>
+                        <p class="text-3xl font-bold text-gray-900 mt-1">{{ total_contatos }}</p>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-address-book text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium">Favoritos</p>
+                        <p class="text-3xl font-bold text-yellow-600 mt-1">{{ total_favoritos }}</p>
+                    </div>
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-star text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium">Categorias</p>
+                        <p class="text-3xl font-bold text-purple-600 mt-1">4</p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-folder text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Barra de Busca e Filtros -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+        <form method="get" action="{% url 'lista_contatos' %}" class="space-y-4">
+            <div class="flex flex-col md:flex-row gap-4">
+                <!-- Busca -->
+                <div class="flex-1">
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            name="q" 
+                            value="{{ query }}" 
+                            placeholder="Buscar por nome, email, telefone, empresa..." 
+                            class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                        >
+                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <!-- Filtro por Categoria -->
+                <div class="md:w-48">
+                    <select name="categoria" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                        <option value="">Todas Categorias</option>
+                        <option value="familia" {% if categoria_selecionada == 'familia' %}selected{% endif %}>Família</option>
+                        <option value="amigo" {% if categoria_selecionada == 'amigo' %}selected{% endif %}>Amigos</option>
+                        <option value="trabalho" {% if categoria_selecionada == 'trabalho' %}selected{% endif %}>Trabalho</option>
+                        <option value="outros" {% if categoria_selecionada == 'outros' %}selected{% endif %}>Outros</option>
+                    </select>
+                </div>
+                
+                <!-- Filtro Favoritos -->
+                <div class="flex items-center space-x-4">
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" name="favoritos" value="1" {% if favoritos == '1' %}checked{% endif %} class="w-5 h-5 text-yellow-600 rounded focus:ring-2 focus:ring-yellow-500">
+                        <span class="text-gray-700 font-medium">
+                            <i class="fas fa-star text-yellow-500"></i> Favoritos
+                        </span>
+                    </label>
+                </div>
+                
+                <!-- Botão Buscar -->
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition duration-200 flex items-center justify-center space-x-2">
+                    <i class="fas fa-filter"></i>
+                    <span>Filtrar</span>
+                </button>
+                
+                <!-- Botão Limpar -->
+                {% if query or categoria_selecionada or favoritos %}
+                <a href="{% url 'lista_contatos' %}" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-medium transition duration-200 flex items-center justify-center">
+                    <i class="fas fa-times"></i>
+                </a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+    
+    <!-- Lista de Contatos -->
+    {% if contatos %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {% for contato in contatos %}
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden card-hover">
+            <div class="p-6">
+                <!-- Avatar e Favorito -->
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-16 h-16 avatar-gradient rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-md">
+                        {% if contato.foto %}
+                        <img src="{{ contato.foto.url }}" alt="{{ contato.nome }}" class="w-16 h-16 rounded-full object-cover">
+                        {% else %}
+                        {{ contato.get_iniciais }}
+                        {% endif %}
+                    </div>
+                    
+                    <a href="{% url 'toggle_favorito' contato.pk %}?next=lista_contatos" class="text-2xl transition duration-200">
+                        {% if contato.favorito %}
+                        <i class="fas fa-star text-yellow-400 hover:text-yellow-500"></i>
+                        {% else %}
+                        <i class="far fa-star text-gray-300 hover:text-yellow-400"></i>
+                        {% endif %}
+                    </a>
+                </div>
+                
+                <!-- Nome e Categoria -->
+                <h3 class="text-lg font-bold text-gray-900 mb-1 truncate">{{ contato.nome }}</h3>
+                <span class="inline-block px-3 py-1 text-xs font-medium rounded-full mb-3
+                    {% if contato.categoria == 'familia' %}bg-green-100 text-green-700
+                    {% elif contato.categoria == 'amigo' %}bg-blue-100 text-blue-700
+                    {% elif contato.categoria == 'trabalho' %}bg-purple-100 text-purple-700
+                    {% else %}bg-gray-100 text-gray-700{% endif %}">
+                    {% if contato.categoria == 'familia' %}Família
+                    {% elif contato.categoria == 'amigo' %}Amigo
+                    {% elif contato.categoria == 'trabalho' %}Trabalho
+                    {% else %}Outros{% endif %}
+                </span>
+                
+                <!-- Informações de Contato -->
+                <div class="space-y-2 mb-4">
+                    {% if contato.email %}
+                    <p class="text-sm text-gray-600 flex items-center truncate">
+                        <i class="fas fa-envelope w-5 text-gray-400"></i>
+                        <span class="ml-2">{{ contato.email }}</span>
+                    </p>
+                    {% endif %}
+                    
+                    {% if contato.celular %}
+                    <p class="text-sm text-gray-600 flex items-center">
+                        <i class="fas fa-mobile-alt w-5 text-gray-400"></i>
+                        <span class="ml-2">{{ contato.celular }}</span>
+                    </p>
+                    {% elif contato.telefone %}
+                    <p class="text-sm text-gray-600 flex items-center">
+                        <i class="fas fa-phone w-5 text-gray-400"></i>
+                        <span class="ml-2">{{ contato.telefone }}</span>
+                    </p>
+                    {% endif %}
+                    
+                    {% if contato.empresa %}
+                    <p class="text-sm text-gray-600 flex items-center truncate">
+                        <i class="fas fa-building w-5 text-gray-400"></i>
+                        <span class="ml-2">{{ contato.empresa }}</span>
+                    </p>
+                    {% endif %}
+                </div>
+                
+                <!-- Botões de Ação -->
+                <div class="flex gap-2">
+                    <a href="{% url 'detalhes_contato' contato.pk %}" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-600 py-2 px-4 rounded-lg text-sm font-medium transition duration-200 text-center">
+                        <i class="fas fa-eye"></i> Ver
+                    </a>
+                    <a href="{% url 'editar_contato' contato.pk %}" class="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-600 py-2 px-4 rounded-lg text-sm font-medium transition duration-200 text-center">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Paginação -->
+    {% if contatos.has_other_pages %}
+    <div class="mt-8 flex justify-center">
+        <nav class="flex items-center space-x-2">
+            {% if contatos.has_previous %}
+            <a href="?page=1{% if query %}&q={{ query }}{% endif %}{% if categoria_selecionada %}&categoria={{ categoria_selecionada }}{% endif %}{% if favoritos %}&favoritos={{ favoritos }}{% endif %}" class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition duration-200">
+                <i class="fas fa-angle-double-left"></i>
+            </a>
+            <a href="?page={{ contatos.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if categoria_selecionada %}&categoria={{ categoria_selecionada }}{% endif %}{% if favoritos %}&favoritos={{ favoritos }}{% endif %}" class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition duration-200">
+                <i class="fas fa-angle-left"></i>
+            </a>
+            {% endif %}
+            
+            <span class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium">
+                {{ contatos.number }} de {{ contatos.paginator.num_pages }}
+            </span>
+            
+            {% if contatos.has_next %}
+            <a href="?page={{ contatos.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if categoria_selecionada %}&categoria={{ categoria_selecionada }}{% endif %}{% if favoritos %}&favoritos={{ favoritos }}{% endif %}" class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition duration-200">
+                <i class="fas fa-angle-right"></i>
+            </a>
+            <a href="?page={{ contatos.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}{% if categoria_selecionada %}&categoria={{ categoria_selecionada }}{% endif %}{% if favoritos %}&favoritos={{ favoritos }}{% endif %}" class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition duration-200">
+                <i class="fas fa-angle-double-right"></i>
+            </a>
+            {% endif %}
+        </nav>
+    </div>
+    {% endif %}
+    
+    {% else %}
+    <!-- Estado Vazio -->
+    <div class="text-center py-16">
+        <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-address-book text-gray-400 text-5xl"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">Nenhum contato encontrado</h3>
+        <p class="text-gray-600 mb-8">
+            {% if query or categoria_selecionada or favoritos %}
+            Tente ajustar os filtros ou <a href="{% url 'lista_contatos' %}" class="text-blue-600 hover:underline">limpar a busca</a>.
+            {% else %}
+            Comece adicionando seu primeiro contato!
+            {% endif %}
+        </p>
+        <a href="{% url 'criar_contato' %}" class="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-3 rounded-lg font-medium transition duration-200 shadow-md hover:shadow-lg">
+            <i class="fas fa-plus"></i>
+            <span>Criar Primeiro Contato</span>
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

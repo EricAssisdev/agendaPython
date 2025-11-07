@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ titulo }} - Agenda Eletrônica{% endblock %}
+
+{% block content %}
+<div class="fade-in max-w-4xl mx-auto">
+    <!-- Breadcrumb -->
+    <div class="mb-6">
+        <nav class="flex items-center space-x-2 text-sm text-gray-600">
+            <a href="{% url 'lista_contatos' %}" class="hover:text-blue-600 transition duration-200">
+                <i class="fas fa-home"></i> Contatos
+            </a>
+            <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+            {% if contato %}
+            <a href="{% url 'detalhes_contato' contato.pk %}" class="hover:text-blue-600 transition duration-200">
+                {{ contato.nome }}
+            </a>
+            <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+            {% endif %}
+            <span class="text-gray-900 font-medium">{{ titulo }}</span>
+        </nav>
+    </div>
+    
+    <!-- Formulário -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-6">
+            <h1 class="text-3xl font-bold text-white flex items-center">
+                <i class="fas {% if contato %}fa-edit{% else %}fa-plus-circle{% endif %} mr-3"></i>
+                {{ titulo }}
+            </h1>
+        </div>
+        
+        <!-- Formulário -->
+        <form method="post" enctype="multipart/form-data" class="p-8">
+            {% csrf_token %}
+            
+            <!-- Mensagens de Erro do Formulário -->
+            {% if form.non_field_errors %}
+            <div class="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
+                <div class="flex items-center space-x-2 text-red-800">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <div>
+                        {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Nome (Obrigatório) -->
+                <div class="md:col-span-2">
+                    <label for="{{ form.nome.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-user text-blue-600"></i> Nome Completo *
+                    </label>
+                    {{ form.nome }}
+                    {% if form.nome.errors %}
+                    <p class="mt-2 text-sm text-red-600">
+                        {% for error in form.nome.errors %}{{ error }}{% endfor %}
+                    </p>
+                    {% endif %}
+                </div>
+                
+                <!-- Email -->
+                <div class="md:col-span-2">
+                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-envelope text-blue-600"></i> E-mail
+                    </label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                    <p class="mt-2 text-sm text-red-600">
+                        {% for error in form.email.errors %}{{ error }}{% endfor %}
+                    </p>
+                    {% endif %}
+                </div>
+                
+                <!-- Telefone -->
+                <div>
+                    <label for="{{ form.telefone.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-phone text-green-600"></i> Telefone
+                    </label>
+                    {{ form.telefone }}
+                    {% if form.telefone.errors %}
+                    <p class="mt-2 text-sm text-red-600">
+                        {% for error in form.telefone.errors %}{{ error }}{% endfor %}
+                    </p>
+                    {% endif %}
+                </div>
+                
+                <!-- Celular -->
+                <div>
+                    <label for="{{ form.celular.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-mobile-alt text-green-600"></i> Celular
+                    </label>
+                    {{ form.celular }}
+                    {% if form.celular.errors %}
+                    <p class="mt-2 text-sm text-red-600">
+                        {% for error in form.celular.errors %}{{ error }}{% endfor %}
+                    </p>
+                    {% endif %}
+                </div>
+                
+                <!-- Categoria -->
+                <div>
+                    <label for="{{ form.categoria.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-tag text-purple-600"></i> Categoria
+                    </label>
+                    {{ form.categoria }}
+                    {% if form.categoria.errors %}
+                    <p class="mt-2 text-sm text-red-600">
+                        {% for error in form.categoria.errors %}{{ error }}{% endfor %}
+                    </p>
+                    {% endif %}
+                </div>
+                
+                <!-- Aniversário -->
+                <div>
+                    <label for="{{ form.aniversario.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-birthday-cake text-pink-600"></i> Aniversário
+                    </label>
+                    {{ form.aniversario }}
+                    {% if form.aniversario.errors %}
+                    <p class="mt-2 text-sm text-red-600">
+                        {% for error in form.aniversario.errors %}{{ error }}{% endfor %}
+                    </p>
+                    {% endif %}
+                </div>
+                
+                <!-- Empresa -->
+                <div>
+                    <label for="{{ form.empresa.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-building text-gray-600"></i> Empresa
+                    </label>
+                    {{ form.empresa }}
+                    {% if form.empresa.errors %}
+                    <p class="mt-2 text-sm text-red-600">
+                        {% for error in form.empresa.errors %}{{ error }}{% endfor %}
+                    </p>
+                    {% endif %}
+                </div>
+                
+                <!-- Cargo -->
+                <div>
+                    <label for="{{ form.cargo.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-briefcase text-gray-600"></i> Cargo
+                    </label>
+                    {{ form.cargo }}
+                    {% if form.cargo.errors %}
+                    <p class="mt-2 text-sm text-red-600">
+                        {% for error in form.cargo.errors %}{{ error }}{% endfor %}
+                    </p>
+                    {% endif %}
+                </div>
+                
+                <!-- Endereço -->
+                <div class="md:col-span-2">
+                    <label for="{{ form.endereco.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-map-marker-alt text-red-600"></i> Endereço
+                    </label>
+                    {{ form.endereco }}
+                    {% if form.endereco.errors %}
+                    <p class="mt-2 text-sm text-red-600">
+                        {% for error in form.endereco.errors %}{{ error }}{% endfor %}
+                    </p>
+                    {% endif %}
+                </div>
+                
+                <!-- Observações -->
+                <div class="md:col-span-2">
+                    <label for="{{ form.observacoes.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-sticky-note text-yellow-600"></i> Observações
+                    </label>
+                    {{ form.observacoes }}
+                    {% if form.observacoes.errors %}
+                    <p class="mt-2 text-sm text-red-600">
+                        {% for error in form.observacoes.errors %}{{ error }}{% endfor %}
+                    </p>
+                    {% endif %}
+                </div>
+                
+                <!-- Foto -->
+                <div>
+                    <label for="{{ form.foto.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-camera text-indigo-600"></i> Foto
+                    </label>
+                    {{ form.foto }}
+                    {% if form.foto.errors %}
+                    <p class="mt-2 text-sm text-red-600">
+                        {% for error in form.foto.errors %}{{ error }}{% endfor %}
+                    </p>
+                    {% endif %}
+                    {% if contato and contato.foto %}
+                    <div class="mt-3">
+                        <img src="{{ contato.foto.url }}" alt="{{ contato.nome }}" class="w-20 h-20 rounded-lg object-cover border-2 border-gray-200">
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Favorito -->
+                <div class="flex items-center h-full pt-8">
+                    <label class="flex items-center space-x-3 cursor-pointer">
+                        {{ form.favorito }}
+                        <span class="text-sm font-semibold text-gray-700">
+                            <i class="fas fa-star text-yellow-500"></i> Marcar como favorito
+                        </span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Botões de Ação -->
+            <div class="mt-8 pt-6 border-t border-gray-200 flex items-center justify-between">
+                <a href="{% if contato %}{% url 'detalhes_contato' contato.pk %}{% else %}{% url 'lista_contatos' %}{% endif %}" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-medium transition duration-200 flex items-center space-x-2">
+                    <i class="fas fa-times"></i>
+                    <span>Cancelar</span>
+                </a>
+                
+                <button type="submit" class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-3 rounded-lg font-medium transition duration-200 flex items-center space-x-2 shadow-md hover:shadow-lg">
+                    <i class="fas fa-save"></i>
+                    <span>{{ botao }}</span>
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Dica -->
+    <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div class="flex items-start space-x-3">
+            <i class="fas fa-info-circle text-blue-600 text-xl mt-0.5"></i>
+            <div class="text-sm text-blue-800">
+                <p class="font-semibold mb-1">Dica:</p>
+                <p>Apenas o campo "Nome Completo" é obrigatório. Preencha as demais informações conforme necessário.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

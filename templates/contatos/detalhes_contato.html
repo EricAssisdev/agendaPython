@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ contato.nome }} - Detalhes{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+    <!-- Breadcrumb -->
+    <div class="mb-6">
+        <nav class="flex items-center space-x-2 text-sm text-gray-600">
+            <a href="{% url 'lista_contatos' %}" class="hover:text-blue-600 transition duration-200">
+                <i class="fas fa-home"></i> Contatos
+            </a>
+            <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+            <span class="text-gray-900 font-medium">{{ contato.nome }}</span>
+        </nav>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Coluna Principal - Informações do Contato -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Card Principal -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <!-- Header com Avatar -->
+                <div class="bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-12 text-center">
+                    <div class="w-32 h-32 mx-auto avatar-gradient rounded-full flex items-center justify-center text-white text-5xl font-bold shadow-2xl mb-4">
+                        {% if contato.foto %}
+                        <img src="{{ contato.foto.url }}" alt="{{ contato.nome }}" class="w-32 h-32 rounded-full object-cover border-4 border-white">
+                        {% else %}
+                        {{ contato.get_iniciais }}
+                        {% endif %}
+                    </div>
+                    <h1 class="text-3xl font-bold text-white mb-2">{{ contato.nome }}</h1>
+                    {% if contato.cargo and contato.empresa %}
+                    <p class="text-blue-100">{{ contato.cargo }} na {{ contato.empresa }}</p>
+                    {% elif contato.empresa %}
+                    <p class="text-blue-100">{{ contato.empresa }}</p>
+                    {% elif contato.cargo %}
+                    <p class="text-blue-100">{{ contato.cargo }}</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Informações de Contato -->
+                <div class="p-8">
+                    <div class="space-y-6">
+                        <!-- Categoria e Favorito -->
+                        <div class="flex items-center justify-between pb-6 border-b border-gray-200">
+                            <span class="inline-block px-4 py-2 text-sm font-medium rounded-full
+                                {% if contato.categoria == 'familia' %}bg-green-100 text-green-700
+                                {% elif contato.categoria == 'amigo' %}bg-blue-100 text-blue-700
+                                {% elif contato.categoria == 'trabalho' %}bg-purple-100 text-purple-700
+                                {% else %}bg-gray-100 text-gray-700{% endif %}">
+                                <i class="fas fa-tag"></i>
+                                {% if contato.categoria == 'familia' %}Família
+                                {% elif contato.categoria == 'amigo' %}Amigo
+                                {% elif contato.categoria == 'trabalho' %}Trabalho
+                                {% else %}Outros{% endif %}
+                            </span>
+                            
+                            <a href="{% url 'toggle_favorito' contato.pk %}?next=detalhes_contato" class="text-3xl transition duration-200">
+                                {% if contato.favorito %}
+                                <i class="fas fa-star text-yellow-400 hover:text-yellow-500"></i>
+                                {% else %}
+                                <i class="far fa-star text-gray-300 hover:text-yellow-400"></i>
+                                {% endif %}
+                            </a>
+                        </div>
+                        
+                        <!-- Email -->
+                        {% if contato.email %}
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-envelope text-blue-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4 flex-1">
+                                <p class="text-sm text-gray-500 font-medium mb-1">E-mail</p>
+                                <a href="mailto:{{ contato.email }}" class="text-gray-900 hover:text-blue-600 transition duration-200 break-all">
+                                    {{ contato.email }}
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Celular -->
+                        {% if contato.celular %}
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-mobile-alt text-green-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4 flex-1">
+                                <p class="text-sm text-gray-500 font-medium mb-1">Celular</p>
+                                <a href="tel:{{ contato.celular }}" class="text-gray-900 hover:text-green-600 transition duration-200">
+                                    {{ contato.celular }}
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Telefone -->
+                        {% if contato.telefone %}
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-phone text-purple-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4 flex-1">
+                                <p class="text-sm text-gray-500 font-medium mb-1">Telefone</p>
+                                <a href="tel:{{ contato.telefone }}" class="text-gray-900 hover:text-purple-600 transition duration-200">
+                                    {{ contato.telefone }}
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Endereço -->
+                        {% if contato.endereco %}
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-map-marker-alt text-red-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4 flex-1">
+                                <p class="text-sm text-gray-500 font-medium mb-1">Endereço</p>
+                                <p class="text-gray-900">{{ contato.endereco }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Aniversário -->
+                        {% if contato.aniversario %}
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-birthday-cake text-pink-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4 flex-1">
+                                <p class="text-sm text-gray-500 font-medium mb-1">Aniversário</p>
+                                <p class="text-gray-900">{{ contato.aniversario|date:"d/m/Y" }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Observações -->
+                        {% if contato.observacoes %}
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-sticky-note text-yellow-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4 flex-1">
+                                <p class="text-sm text-gray-500 font-medium mb-1">Observações</p>
+                                <p class="text-gray-900 whitespace-pre-line">{{ contato.observacoes }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar - Ações e Informações Extras -->
+        <div class="space-y-6">
+            <!-- Ações -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">
+                    <i class="fas fa-cog text-gray-600"></i> Ações
+                </h3>
+                <div class="space-y-3">
+                    <a href="{% url 'editar_contato' contato.pk %}" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium transition duration-200 flex items-center justify-center space-x-2">
+                        <i class="fas fa-edit"></i>
+                        <span>Editar Contato</span>
+                    </a>
+                    
+                    <a href="{% url 'deletar_contato' contato.pk %}" class="w-full bg-red-50 hover:bg-red-100 text-red-600 py-3 px-4 rounded-lg font-medium transition duration-200 flex items-center justify-center space-x-2">
+                        <i class="fas fa-trash"></i>
+                        <span>Excluir Contato</span>
+                    </a>
+                    
+                    <a href="{% url 'lista_contatos' %}" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-medium transition duration-200 flex items-center justify-center space-x-2">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Voltar</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Informações do Sistema -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">
+                    <i class="fas fa-info-circle text-gray-600"></i> Informações
+                </h3>
+                <div class="space-y-3 text-sm">
+                    <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+                        <span class="text-gray-600">Criado em:</span>
+                        <span class="text-gray-900 font-medium">{{ contato.criado_em|date:"d/m/Y H:i" }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Atualizado em:</span>
+                        <span class="text-gray-900 font-medium">{{ contato.atualizado_em|date:"d/m/Y H:i" }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
