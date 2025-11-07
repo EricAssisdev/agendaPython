@@ -46,6 +46,76 @@ Uma aplicação web moderna e intuitiva para gerenciar seus contatos pessoais e 
 - Python 3.8 ou superior
 - pip (gerenciador de pacotes Python)
 
+### Instalação e Desenvolvimento Local
+
+1. **Clone o repositório ou navegue até a pasta do projeto:**
+```bash
+cd C:\Users\Eric\Desktop\faculdade\python-app
+```
+
+2. **Instale as dependências:**
+```bash
+pip install -r requirements.txt
+```
+
+3. **Execute as migrações:**
+```bash
+python manage.py migrate
+```
+
+4. **Crie contatos de exemplo (opcional):**
+```bash
+python manage.py criar_contatos_exemplo
+```
+
+5. **Inicie o servidor de desenvolvimento:**
+```bash
+python manage.py runserver
+```
+
+6. **Acesse no navegador:**
+```
+http://127.0.0.1:8000/
+```
+
+## 🌐 Deploy no Railway
+
+### Configuração Rápida
+
+1. **Adicione as variáveis de ambiente no Railway:**
+
+```bash
+DATABASE_URL=postgresql://postgres:VocWqTPORrjLlfMkAIKNZfsHUIKQYXfJ@postgres.railway.internal:5432/railway
+SECRET_KEY=gere-uma-chave-secreta-forte-aqui
+DEBUG=False
+ALLOWED_HOSTS=*.railway.app
+```
+
+2. **Como pegar a DATABASE_URL:**
+   - No Railway, clique no serviço PostgreSQL
+   - Vá em "Connect" → copie a "Postgres Connection URL"
+   - Cole em `DATABASE_URL`
+
+3. **Gerar SECRET_KEY:**
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(50))"
+```
+
+4. **Deploy automático:**
+   - Conecte seu repositório GitHub ao Railway
+   - O Railway fará deploy automático a cada push
+
+📖 **[Guia Completo de Deploy](DEPLOY.md)** - Leia para instruções detalhadas
+
+### Após o Deploy
+
+Execute no Railway:
+```bash
+railway run python manage.py migrate
+railway run python manage.py createsuperuser
+railway run python manage.py criar_contatos_exemplo
+```
+
 ### Instalação
 
 1. **Navegue até a pasta do projeto:**
