@@ -1,1 +1,2 @@
-web: python manage.py migrate && gunicorn agenda.wsgi --bind 0.0.0.0:$PORT --log-file -
+release: python manage.py collectstatic --noinput
+web: gunicorn agenda.wsgi --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120 --access-logfile - --error-logfile - --log-level info

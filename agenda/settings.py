@@ -27,7 +27,37 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-4e=3_)c)c^mws$cr3i_(a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
+# Configuração do ALLOWED_HOSTS
+ALLOWED_HOSTS = []
+allowed_hosts_env = os.environ.get('ALLOWED_HOSTS', '')
+if allowed_hosts_env:
+    ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(',') if host.strip()]
+
+# Adicionar hosts do Railway automaticamente
+RAILWAY_STATIC_URL = os.environ.get('RAILWAY_STATIC_URL', '')
+RAILWAY_PUBLIC_DOMAIN = os.environ.get('RAILWAY_PUBLIC_DOMAIN', '')
+if RAILWAY_STATIC_URL:
+    ALLOWED_HOSTS.append(RAILWAY_STATIC_URL)
+if RAILWAY_PUBLIC_DOMAIN:
+    ALLOWED_HOSTS.append(RAILWAY_PUBLIC_DOMAIN)
+
+# Permitir domínios do Railway
+if not ALLOWED_HOSTS or DEBUG:
+    ALLOWED_HOSTS.extend(['*.railway.app', '.up.railway.app', 'localhost', '127.0.0.1'])
+
+# Remover duplicatas
+ALLOWED_HOSTS = list(set(ALLOWED_HOSTS))
+
+# CSRF Trusted Origins para Railway
+CSRF_TRUSTED_ORIGINS = []
+if not DEBUG:
+    for host in ALLOWED_HOSTS:
+        if host not in ['localhost', '127.0.0.1']:
+            CSRF_TRUSTED_ORIGINS.extend([
+                f'https://{host}',
+                f'https://*.{host}' if not host.startswith('*') else f'https://{host}'
+            ])
+
 
 
 # Application definition
