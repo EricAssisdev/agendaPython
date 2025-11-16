@@ -40,11 +40,7 @@
             <div class="bg-gray-50 rounded-lg p-6 mb-6 border border-gray-200">
                 <div class="flex items-center space-x-4">
                     <div class="w-16 h-16 avatar-gradient rounded-full flex items-center justify-center text-white text-2xl font-bold flex-shrink-0">
-                        {% if contato.foto %}
-                        <img src="{{ contato.foto.url }}" alt="{{ contato.nome }}" class="w-16 h-16 rounded-full object-cover">
-                        {% else %}
                         {{ contato.get_iniciais }}
-                        {% endif %}
                     </div>
                     <div class="flex-1">
                         <h2 class="text-xl font-bold text-gray-900">{{ contato.nome }}</h2>

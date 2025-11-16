@@ -5,7 +5,7 @@ class ContatoForm(forms.ModelForm):
     class Meta:
         model = Contato
         fields = ['nome', 'email', 'telefone', 'celular', 'endereco', 'categoria', 
-                  'empresa', 'cargo', 'aniversario', 'observacoes', 'foto', 'favorito']
+                  'empresa', 'cargo', 'aniversario', 'observacoes', 'favorito']
         widgets = {
             'nome': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200',
@@ -47,10 +47,6 @@ class ContatoForm(forms.ModelForm):
                 'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200',
                 'rows': 4,
                 'placeholder': 'Observações adicionais...'
-            }),
-            'foto': forms.FileInput(attrs={
-                'class': 'w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200',
-                'accept': 'image/*'
             }),
             'favorito': forms.CheckboxInput(attrs={
                 'class': 'w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500'

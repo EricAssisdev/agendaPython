@@ -113,11 +113,7 @@
                 <!-- Avatar e Favorito -->
                 <div class="flex items-start justify-between mb-4">
                     <div class="w-16 h-16 avatar-gradient rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-md">
-                        {% if contato.foto %}
-                        <img src="{{ contato.foto.url }}" alt="{{ contato.nome }}" class="w-16 h-16 rounded-full object-cover">
-                        {% else %}
                         {{ contato.get_iniciais }}
-                        {% endif %}
                     </div>
                     
                     <a href="{% url 'toggle_favorito' contato.pk %}?next=lista_contatos" class="text-2xl transition duration-200">

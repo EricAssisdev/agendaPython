@@ -58,7 +58,7 @@ def detalhes_contato(request, pk):
 def criar_contato(request):
     """Cria um novo contato"""
     if request.method == 'POST':
-        form = ContatoForm(request.POST, request.FILES)
+        form = ContatoForm(request.POST)
         if form.is_valid():
             contato = form.save()
             messages.success(request, f'Contato "{contato.nome}" criado com sucesso!')
@@ -77,7 +77,7 @@ def editar_contato(request, pk):
     contato = get_object_or_404(Contato, pk=pk)
     
     if request.method == 'POST':
-        form = ContatoForm(request.POST, request.FILES, instance=contato)
+        form = ContatoForm(request.POST, instance=contato)
         if form.is_valid():
             contato = form.save()
             messages.success(request, f'Contato "{contato.nome}" atualizado com sucesso!')

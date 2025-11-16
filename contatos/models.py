@@ -45,7 +45,6 @@ class Contato(models.Model):
     aniversario = models.DateField(blank=True, null=True, verbose_name='Aniversário')
     observacoes = models.TextField(blank=True, null=True, verbose_name='Observações')
     
-    foto = models.ImageField(upload_to='fotos_contatos/', blank=True, null=True, verbose_name='Foto')
     favorito = models.BooleanField(default=False, verbose_name='Favorito')
     
     criado_em = models.DateTimeField(auto_now_add=True, verbose_name='Criado em')
