@@ -9,3 +9,9 @@ staticfiles/
 media/
 .DS_Store
 *.log
+.python-version
+build.sh
+deploy.sh
+nixpacks.toml
+procfile
+.env.example
