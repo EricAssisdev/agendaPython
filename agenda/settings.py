@@ -49,14 +49,11 @@ if not ALLOWED_HOSTS or DEBUG:
 ALLOWED_HOSTS = list(set(ALLOWED_HOSTS))
 
 # CSRF Trusted Origins para Railway
-CSRF_TRUSTED_ORIGINS = []
+CSRF_TRUSTED_ORIGINS = ['https://web-production-f7ba5.up.railway.app']
 if not DEBUG:
     for host in ALLOWED_HOSTS:
-        if host not in ['localhost', '127.0.0.1']:
-            CSRF_TRUSTED_ORIGINS.extend([
-                f'https://{host}',
-                f'https://*.{host}' if not host.startswith('*') else f'https://{host}'
-            ])
+        if host not in ['localhost', '127.0.0.1', '.railway.app', '*.railway.app']:
+            CSRF_TRUSTED_ORIGINS.append(f'https://{host}')
 
 
 
