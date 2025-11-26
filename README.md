@@ -1,4 +1,6 @@
-# 📇 Agenda Eletrônica - Django
+# 📇 Agenda Eletrônica
+
+Dupla: Eric Assis e Raimundo
 
 Uma aplicação web moderna e intuitiva para gerenciar seus contatos pessoais e profissionais, desenvolvida com Django e Tailwind CSS.
 
@@ -9,7 +11,6 @@ Uma aplicação web moderna e intuitiva para gerenciar seus contatos pessoais e 
 - Animações suaves e transições elegantes
 - Ícones do Font Awesome
 - Gradientes e efeitos visuais modernos
-- Totalmente responsivo (mobile, tablet, desktop)
 
 ### 📋 Funcionalidades Principais
 
@@ -29,16 +30,14 @@ Uma aplicação web moderna e intuitiva para gerenciar seus contatos pessoais e 
 - Empresa e Cargo
 - Data de aniversário
 - Observações personalizadas
-- Foto de perfil
 
-#### Recursos Avançados
+#### Recursos
 - 🔍 **Busca avançada** por nome, email, telefone ou empresa
 - 🏷️ **Filtros** por categoria
 - ⭐ **Filtro de favoritos**
 - 📄 **Paginação** (12 contatos por página)
 - 📊 **Dashboard** com estatísticas
 - 🎨 **Avatares coloridos** com iniciais
-- 📱 **Totalmente responsivo**
 
 ## 🚀 Como Usar
 
@@ -78,77 +77,6 @@ python manage.py runserver
 http://127.0.0.1:8000/
 ```
 
-## 🌐 Deploy no Railway
-
-### Configuração Rápida
-
-1. **Adicione as variáveis de ambiente no Railway:**
-
-```bash
-DATABASE_URL=postgresql://postgres:VocWqTPORrjLlfMkAIKNZfsHUIKQYXfJ@postgres.railway.internal:5432/railway
-SECRET_KEY=gere-uma-chave-secreta-forte-aqui
-DEBUG=False
-ALLOWED_HOSTS=*.railway.app
-```
-
-2. **Como pegar a DATABASE_URL:**
-   - No Railway, clique no serviço PostgreSQL
-   - Vá em "Connect" → copie a "Postgres Connection URL"
-   - Cole em `DATABASE_URL`
-
-3. **Gerar SECRET_KEY:**
-```bash
-python -c "import secrets; print(secrets.token_urlsafe(50))"
-```
-
-4. **Deploy automático:**
-   - Conecte seu repositório GitHub ao Railway
-   - O Railway fará deploy automático a cada push
-
-📖 **[Guia Completo de Deploy](DEPLOY.md)** - Leia para instruções detalhadas
-
-### Após o Deploy
-
-Execute no Railway:
-```bash
-railway run python manage.py migrate
-railway run python manage.py createsuperuser
-railway run python manage.py criar_contatos_exemplo
-```
-
-### Instalação
-
-1. **Navegue até a pasta do projeto:**
-```bash
-cd C:\Users\Eric\Desktop\faculdade\python-app
-```
-
-2. **(Opcional) Instale o Pillow para upload de fotos:**
-```bash
-pip install Pillow
-```
-
-### Executar a Aplicação
-
-1. **Inicie o servidor de desenvolvimento:**
-```bash
-python manage.py runserver
-```
-
-2. **Acesse no navegador:**
-```
-http://127.0.0.1:8000/
-```
-
-### Criar um Superusuário (Administrador)
-
-Para acessar o painel administrativo do Django:
-
-```bash
-python manage.py createsuperuser
-```
-
-Depois acesse: `http://127.0.0.1:8000/admin/`
 
 ## 📁 Estrutura do Projeto
 
@@ -181,125 +109,3 @@ python-app/
 └── manage.py             # Gerenciador Django
 ```
 
-## 🎯 Funcionalidades Detalhadas
-
-### Dashboard
-- Total de contatos cadastrados
-- Contador de favoritos
-- Número de categorias
-- Design com cards informativos
-
-### Lista de Contatos
-- Visualização em grid responsivo
-- Cards com informações resumidas
-- Avatares coloridos ou fotos
-- Badge de categoria
-- Ícone de favorito
-- Busca e filtros integrados
-
-### Detalhes do Contato
-- Visualização completa de todas as informações
-- Layout em colunas (principal + sidebar)
-- Ações rápidas (editar, excluir, voltar)
-- Informações do sistema (data de criação/atualização)
-- Design elegante com ícones e cores
-
-### Formulários
-- Validação de campos
-- Mensagens de erro claras
-- Layout responsivo em grid
-- Campos com ícones
-- Preview de foto (JavaScript)
-- Formatação automática de telefone
-
-### Filtros e Busca
-- Busca em tempo real
-- Múltiplos filtros simultâneos
-- Preservação de filtros na paginação
-- Botão para limpar filtros
-
-## 🎨 Tecnologias Utilizadas
-
-- **Backend:** Django 5.2.8
-- **Frontend:** HTML5, CSS3, JavaScript
-- **Estilização:** Tailwind CSS (via CDN)
-- **Ícones:** Font Awesome 6.4.0
-- **Fontes:** Google Fonts (Inter)
-- **Banco de Dados:** SQLite3
-
-## 📱 Responsividade
-
-A aplicação é totalmente responsiva e funciona perfeitamente em:
-- 📱 Smartphones (320px+)
-- 📱 Tablets (768px+)
-- 💻 Desktops (1024px+)
-- 🖥️ Telas grandes (1920px+)
-
-## 🎨 Paleta de Cores
-
-- **Primária:** Azul (#3B82F6) e Roxo (#9333EA)
-- **Categorias:**
-  - Família: Verde
-  - Amigos: Azul
-  - Trabalho: Roxo
-  - Outros: Cinza
-- **Ações:**
-  - Sucesso: Verde
-  - Erro: Vermelho
-  - Aviso: Amarelo
-  - Info: Azul
-
-## 🔒 Segurança
-
-- Proteção CSRF em todos os formulários
-- Validação de dados no backend
-- Confirmação antes de exclusões
-- Mensagens de feedback para todas as ações
-
-## 🌟 Melhores Práticas Implementadas
-
-### UX/UI
-- ✅ Feedback visual imediato
-- ✅ Animações suaves
-- ✅ Mensagens de sucesso/erro claras
-- ✅ Confirmações para ações destrutivas
-- ✅ Estados de hover e foco
-- ✅ Hierarquia visual clara
-- ✅ Consistência em toda aplicação
-
-### Código
-- ✅ Código organizado e modular
-- ✅ Nomenclatura clara e descritiva
-- ✅ Comentários explicativos
-- ✅ Separação de responsabilidades
-- ✅ DRY (Don't Repeat Yourself)
-- ✅ Templates reutilizáveis
-
-## 📝 Próximos Passos (Melhorias Futuras)
-
-- [ ] Autenticação de usuários
-- [ ] Exportar contatos (CSV, vCard)
-- [ ] Importar contatos
-- [ ] Grupos de contatos
-- [ ] Tags personalizadas
-- [ ] API REST
-- [ ] Aplicativo mobile
-- [ ] Sincronização com Google Contacts
-- [ ] Backup automático
-- [ ] Modo escuro
-
-## 🤝 Contribuindo
-
-Sinta-se à vontade para contribuir com melhorias!
-
-## 📄 Licença
-
-Este projeto é open source e está disponível para uso educacional.
-
-## 👨‍💻 Desenvolvedor
-
-Desenvolvido com ❤️ usando Django e Tailwind CSS
-
----
-
-**Aproveite sua Agenda Eletrônica!** 🎉
