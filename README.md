@@ -1,6 +1,7 @@
 # 📇 Agenda Eletrônica
 
 Dupla: Eric Assis e Raimundo
+Link da aplicação: https://web-production-f7ba5.up.railway.app/
 
 Uma aplicação web moderna e intuitiva para gerenciar seus contatos pessoais e profissionais, desenvolvida com Django e Tailwind CSS.
 
